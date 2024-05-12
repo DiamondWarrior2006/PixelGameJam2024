@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvfrickhtm6f7"]
+
+[ext_resource type="Script" path="res://Scripts/collectable.gd" id="1_g2kfp"]
+[ext_resource type="Texture2D" uid="uid://da5880uchff8k" path="res://icon.svg" id="1_grb7s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ilnqw"]
+size = Vector2(60, 60)
+
+[node name="Collectable" type="Area2D"]
+script = ExtResource("1_g2kfp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.475, 0.475)
+texture = ExtResource("1_grb7s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ilnqw")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

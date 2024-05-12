@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://b583ot57yges6"]
+
+[ext_resource type="PackedScene" uid="uid://kgu4mmo34jle" path="res://Scenes/player_fish.tscn" id="1_8kxrs"]
+[ext_resource type="PackedScene" uid="uid://bft1f8q3asqg" path="res://Scenes/ui.tscn" id="1_id8gf"]
+[ext_resource type="PackedScene" uid="uid://dvfrickhtm6f7" path="res://Scenes/collectable.tscn" id="3_eyyma"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" parent="CanvasLayer" instance=ExtResource("1_id8gf")]
+
+[node name="PlayerFish" parent="." instance=ExtResource("1_8kxrs")]
+position = Vector2(302, 194)
+metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="PlayerFish"]
+zoom = Vector2(1.41, 1.41)
+limit_left = 0
+limit_top = 0
+limit_smoothed = true
+position_smoothing_enabled = true
+
+[node name="Collectable" parent="." instance=ExtResource("3_eyyma")]
+position = Vector2(232, 398)
+
+[node name="Collectable2" parent="." instance=ExtResource("3_eyyma")]
+position = Vector2(454, 422)
+
+[node name="Collectable3" parent="." instance=ExtResource("3_eyyma")]
+position = Vector2(688, 330)
+
+[node name="Collectable4" parent="." instance=ExtResource("3_eyyma")]
+position = Vector2(302, 708)
+
+[node name="Collectable5" parent="." instance=ExtResource("3_eyyma")]
+position = Vector2(867, 681)
+
+[node name="Collectable6" parent="." instance=ExtResource("3_eyyma")]
+position = Vector2(1067, 376)
+
+[node name="Collectable7" parent="." instance=ExtResource("3_eyyma")]
+position = Vector2(875, 160)
+
+[node name="Collectable8" parent="." instance=ExtResource("3_eyyma")]
+position = Vector2(1256, 172)
+
+[node name="Collectable9" parent="." instance=ExtResource("3_eyyma")]
+position = Vector2(1295, 612)

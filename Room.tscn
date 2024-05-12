@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://xlenslejnroi"]
+
+[ext_resource type="Script" path="res://Scripts/Room.gd" id="1_hvi7e"]
+
+[node name="Room" type="RigidBody2D"]
+z_index = -155
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_hvi7e")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
