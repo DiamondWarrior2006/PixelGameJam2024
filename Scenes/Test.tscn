@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b583ot57yges6"]
+[gd_scene load_steps=5 format=3 uid="uid://b583ot57yges6"]
 
 [ext_resource type="PackedScene" uid="uid://kgu4mmo34jle" path="res://Scenes/player_fish.tscn" id="1_8kxrs"]
 [ext_resource type="PackedScene" uid="uid://bft1f8q3asqg" path="res://Scenes/ui.tscn" id="1_id8gf"]
+[ext_resource type="PackedScene" uid="uid://dsgi1t7cgdugx" path="res://Scenes/shark.tscn" id="2_3a68c"]
 [ext_resource type="PackedScene" uid="uid://dvfrickhtm6f7" path="res://Scenes/collectable.tscn" id="3_eyyma"]
 
 [node name="Node2D" type="Node2D"]
@@ -9,6 +10,8 @@
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("1_id8gf")]
+
+[node name="Shark" parent="." instance=ExtResource("2_3a68c")]
 
 [node name="PlayerFish" parent="." instance=ExtResource("1_8kxrs")]
 position = Vector2(302, 194)

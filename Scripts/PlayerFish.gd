@@ -16,14 +16,17 @@ func _physics_process(delta):
 	var direction = rotation
 	if dashing == true:
 		speed = dash_speed
+		$CPUParticles2D.emitting = true
 	else:
 		speed = normal_speed
+		$CPUParticles2D.emitting = false
 	
-	if Input.is_action_just_pressed("Dash") :
+	if Input.is_action_just_pressed("Dash") && moving == true:
 		dashing = true
 		$Timer.start()
 	
 	player_movement(delta)
+	player_animation()
 	move_and_slide()
 
 func player_movement(delta):
@@ -38,7 +41,13 @@ func player_movement(delta):
 	var direction = get_global_mouse_position() - global_position
 	var angle_to = transform.x.angle_to(direction)
 	rotate(sign(angle_to) * min(delta * rotation_speed, abs(angle_to)))
+	$CPUParticles2D.process_material.set_shader_parameter("emission_angle", self.rotation_degrees)
 
+func player_animation():
+	if moving == false:
+		$Sprite2D.play("Idle")
+	else:
+		$Sprite2D.play("Moving")
 
 func _on_timer_timeout():
 	dashing = false

@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsgi1t7cgdugx"]
+
+[ext_resource type="Script" path="res://Scripts/shark.gd" id="1_jcwth"]
+[ext_resource type="Texture2D" uid="uid://da5880uchff8k" path="res://icon.svg" id="1_q17es"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ml0j6"]
+size = Vector2(64, 64)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gk6g7"]
+radius = 338.006
+
+[node name="Shark" type="CharacterBody2D"]
+position = Vector2(549, 218)
+script = ExtResource("1_jcwth")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_q17es")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ml0j6")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_gk6g7")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
