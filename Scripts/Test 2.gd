@@ -2,6 +2,8 @@ extends Node2D
 
 
 var Room = preload("res://Scenes/Room.tscn")
+var Player = preload("res://Scenes/player_fish.tscn")
+var font = preload("res://Fonts/PixeloidMono-d94EV.ttf")
 @onready var Map = $TileMap
 
 var tile_size = 64
@@ -12,13 +14,18 @@ var horiz_spread = 100
 var cull = 0.5
 
 var path
+var start_room = null
+var end_room = null
+var player = null
 
 func _ready():
 	randomize()
 	make_rooms()
+	find_start_room()
+	find_end_room()
 
-#func _process(delta):
-#	queue_redraw()
+func _process(delta):
+	queue_redraw()
 
 func make_rooms():
 	for i in range(num_rooms):
@@ -26,7 +33,7 @@ func make_rooms():
 		var r = Room.instantiate()
 		var wid = min_size + randi() % (max_size - min_size)
 		var hig = min_size + randi() % (max_size - min_size)
-		r.make_room(pos, Vector2(wid, hig) * tile_size)
+		r.make_room(pos, Vector2(wid + 1, hig + 1) * tile_size)
 		$Rooms.add_child(r)
 	await(get_tree().create_timer(0.5).timeout)
 	
@@ -41,8 +48,15 @@ func make_rooms():
 	
 	path = find_mst(room_pos)
 	make_map()
+	await(get_tree().create_timer(0.5).timeout)
+	
+	player = Player.instantiate()
+	add_child(player)
+	player.position = start_room.position
 
-#func _draw():
+func _draw():
+	if start_room:
+		pass
 #	for room in $Rooms.get_children():
 #		draw_rect(Rect2(room.position - room.size, room.size * 2), Color(131, 191, 63), false)
 #	if path:
@@ -132,3 +146,17 @@ func carve_corrider(start, end):
 	for y in range(start.y, end.y, difference_y):
 		Map.set_cell(0, Vector2i(y_over_x.x, y), 2, Vector2i(0, 0), 0);
 		Map.set_cell(0, Vector2i(y_over_x.x + difference_x, y), 2, Vector2i(0, 0), 0);
+
+func find_start_room():
+	var min_x = INF
+	for room in $Rooms.get_children():
+		if room.position.x < min_x:
+			start_room = room
+			min_x = room.position.x
+
+func find_end_room():
+	var max_x = -INF
+	for room in $Rooms.get_children():
+		if room.position.x > max_x:
+			end_room = room
+			max_x = room.position.x

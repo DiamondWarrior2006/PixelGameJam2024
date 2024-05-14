@@ -8,14 +8,21 @@
 texture = ExtResource("3_xpe57")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2c0rc"]
 texture = ExtResource("2_qx0b6")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
 
 [sub_resource type="TileSet" id="TileSet_4g33l"]
 tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 2
+terrain_set_0/mode = 0
 sources/1 = SubResource("TileSetAtlasSource_vqkg8")
 sources/2 = SubResource("TileSetAtlasSource_2c0rc")
 
@@ -23,10 +30,6 @@ sources/2 = SubResource("TileSetAtlasSource_2c0rc")
 script = ExtResource("1_66fx2")
 
 [node name="Rooms" type="Node" parent="."]
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(576, 324)
-zoom = Vector2(0.03, 0.03)
 
 [node name="TileMap" type="TileMap" parent="."]
 show_behind_parent = true

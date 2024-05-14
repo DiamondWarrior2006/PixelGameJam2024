@@ -402,6 +402,7 @@ shader_parameter/emission_angle = null
 shader_parameter/color_ramp = SubResource("GradientTexture1D_dxi8u")
 
 [node name="PlayerFish" type="CharacterBody2D"]
+collision_mask = 2
 script = ExtResource("1_pytjm")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
@@ -412,7 +413,6 @@ animation = &"Idle"
 autoplay = "Idle"
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
-visible = false
 rotation = 1.5708
 polygon = PackedVector2Array(-3.99991, 25, 4.00009, 25, 9.00003, 6.99997, 11, -11, 18, -13.0001, 17.9999, -21.0001, 10.9999, -22, 8.99989, -31, 2.99986, -40, -3.00014, -40, -7.00013, -36, -10.0001, -23, -19.0001, -18.9999, -19, -11.9999, -11, -11, -8.99999, 4.00003)
 
@@ -426,5 +426,10 @@ emitting = false
 process_material = SubResource("ShaderMaterial_ijchv")
 texture = ExtResource("4_cidqg")
 lifetime = 0.5
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.41, 1.41)
+limit_smoothed = true
+position_smoothing_enabled = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
