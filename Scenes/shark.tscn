@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://dsgi1t7cgdugx"]
+[gd_scene load_steps=22 format=3 uid="uid://dsgi1t7cgdugx"]
 
 [ext_resource type="Script" path="res://Scripts/shark.gd" id="1_jcwth"]
 [ext_resource type="Texture2D" uid="uid://cgm8426newwiv" path="res://Sprites/Shark_Idle.png" id="2_l7yl0"]
+[ext_resource type="Texture2D" uid="uid://c26m710ymrghd" path="res://Sprites/Shark_Moving.png" id="3_r4qf7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p6a3m"]
 atlas = ExtResource("2_l7yl0")
@@ -35,6 +36,38 @@ region = Rect2(576, 0, 96, 64)
 atlas = ExtResource("2_l7yl0")
 region = Rect2(672, 0, 96, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_rlrgl"]
+atlas = ExtResource("3_r4qf7")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kudnn"]
+atlas = ExtResource("3_r4qf7")
+region = Rect2(96, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xsd3w"]
+atlas = ExtResource("3_r4qf7")
+region = Rect2(192, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr625"]
+atlas = ExtResource("3_r4qf7")
+region = Rect2(288, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28by6"]
+atlas = ExtResource("3_r4qf7")
+region = Rect2(384, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2esm"]
+atlas = ExtResource("3_r4qf7")
+region = Rect2(480, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ncqt3"]
+atlas = ExtResource("3_r4qf7")
+region = Rect2(576, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_obb70"]
+atlas = ExtResource("3_r4qf7")
+region = Rect2(672, 0, 96, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_xc8hj"]
 animations = [{
 "frames": [{
@@ -65,6 +98,35 @@ animations = [{
 "loop": true,
 "name": &"Idle",
 "speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rlrgl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kudnn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xsd3w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr625")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_28by6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y2esm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ncqt3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_obb70")
+}],
+"loop": true,
+"name": &"Moving",
+"speed": 12.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gk6g7"]
@@ -72,15 +134,16 @@ radius = 338.006
 
 [node name="Shark" type="CharacterBody2D"]
 position = Vector2(549, 218)
+collision_mask = 2
 script = ExtResource("1_jcwth")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_xc8hj")
-animation = &"Idle"
+animation = &"Moving"
 autoplay = "Idle"
-frame_progress = 0.0785274
+frame_progress = 0.0881725
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(66, -15, 42, -20, 37, -28, 22, -27, 20, -20, -29, -11, -52, -8, -52, 8, -29, 12, 20, 20, 23, 30, 35, 30, 42, 20, 66, 14, 76, 5, 76, -6)

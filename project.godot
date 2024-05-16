@@ -24,6 +24,10 @@ ScoreSystem="*res://Scripts/score_system.gd"
 window/stretch/mode="viewport"
 window/per_pixel_transparency/allowed=true
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gaea/plugin.cfg")
+
 [input]
 
 move={
@@ -39,4 +43,4 @@ Dash={
 
 [rendering]
 
-environment/defaults/default_clear_color=Color(0.59375, 0.507813, 0.164063, 1)
+environment/defaults/default_clear_color=Color(0.835938, 0.769531, 0.535156, 1)

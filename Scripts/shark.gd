@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+@onready var animator = $AnimatedSprite2D
+
 var player = null
 var speed = 200
 
@@ -16,8 +18,14 @@ func _physics_process(delta):
 		rotate(sign(angle_to) * min(delta * rotation_speed, abs(angle_to)))
 	else:
 		velocity = Vector2.ZERO
+	animations()
 	move_and_slide()
 
+func animations():
+	if moving == true:
+		animator.play("Moving")
+	else:
+		animator.play("Idle")
 
 func _on_area_2d_body_entered(body):
 	player = body

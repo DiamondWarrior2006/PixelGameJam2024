@@ -428,7 +428,6 @@ texture = ExtResource("4_cidqg")
 lifetime = 0.5
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.41, 1.41)
 limit_smoothed = true
 position_smoothing_enabled = true
 

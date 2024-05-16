@@ -13,7 +13,6 @@ func _ready():
 
 func _physics_process(delta):
 	# Player Dashing
-	var direction = rotation
 	if dashing == true:
 		speed = dash_speed
 		$CPUParticles2D.emitting = true

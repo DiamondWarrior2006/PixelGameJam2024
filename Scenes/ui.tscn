@@ -1,11 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bft1f8q3asqg"]
+[gd_scene load_steps=4 format=3 uid="uid://bft1f8q3asqg"]
 
-[ext_resource type="FontFile" uid="uid://bqx638y35rq3g" path="res://Fonts/PixeloidMono-d94EV.ttf" id="1_0i68e"]
 [ext_resource type="Script" path="res://Scripts/ui.gd" id="1_27nj8"]
+[ext_resource type="Theme" uid="uid://cg1qrn81ska6n" path="res://Theme.tres" id="2_2idth"]
 [ext_resource type="FontFile" uid="uid://cu0u7sjbck8pg" path="res://Fonts/PixeloidSansBold-PKnYd.ttf" id="2_w134s"]
-
-[sub_resource type="Theme" id="Theme_tk07w"]
-Label/fonts/font = ExtResource("1_0i68e")
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -43,7 +40,7 @@ texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-theme = SubResource("Theme_tk07w")
+theme = ExtResource("2_2idth")
 theme_override_fonts/font = ExtResource("2_w134s")
 text = "Golden Algaes left: 0"
 horizontal_alignment = 1

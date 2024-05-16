@@ -3,29 +3,35 @@ extends Node2D
 
 var Room = preload("res://Scenes/Room.tscn")
 var Player = preload("res://Scenes/player_fish.tscn")
+var Collectable = preload("res://Scenes/collectable.tscn")
 var font = preload("res://Fonts/PixeloidMono-d94EV.ttf")
+var Shark = preload("res://Scenes/shark.tscn")
+
 @onready var Map = $TileMap
 
 var tile_size = 64
-var num_rooms = 50
+var num_rooms = 25
 var min_size = 8
 var max_size = 15
 var horiz_spread = 100
 var cull = 0.5
 
 var path
+var play_mode = false
 var start_room = null
 var end_room = null
+var shark_room = null
 var player = null
+var shark = null
+var algae = null
 
 func _ready():
 	randomize()
 	make_rooms()
-	find_start_room()
-	find_end_room()
 
 func _process(delta):
 	queue_redraw()
+	
 
 func make_rooms():
 	for i in range(num_rooms):
@@ -50,9 +56,21 @@ func make_rooms():
 	make_map()
 	await(get_tree().create_timer(0.5).timeout)
 	
+	find_start_room()
+	find_end_room()
+	find_shark_spawner()
 	player = Player.instantiate()
 	add_child(player)
 	player.position = start_room.position
+	
+	shark = Shark.instantiate()
+	add_child(shark)
+	shark.position = shark_room.position
+	
+	algae = Collectable.instantiate()
+	add_child(algae)
+	algae.position = end_room.position
+	play_mode = true
 
 func _draw():
 	if start_room:
@@ -97,6 +115,7 @@ func find_mst(nodes):
 func make_map():
 	Map.clear()
 	
+	var walls = []
 	var full_rect = Rect2()
 	for room in $Rooms.get_children():
 		var r = Rect2(room.position - room.size, room.get_node("CollisionShape2D").shape.extents*2)
@@ -105,7 +124,9 @@ func make_map():
 	var bottomright = Map.local_to_map(full_rect.end)
 	for x in range(topleft.x, bottomright.x):
 		for y in range(topleft.y, bottomright.y):
-			Map.set_cell(0, Vector2i(x, y), 1, Vector2i(0, 0), 0)
+			walls.append(Vector2i(x, y))
+#			Map.set_cells_terrain_connect(0, walls, 0, 0, false)
+			Map.set_cell(0, Vector2i(x, y), 1, Vector2i(1, 1), 0)
 	
 	var corridors = []
 	for room in $Rooms.get_children():
@@ -160,3 +181,10 @@ func find_end_room():
 		if room.position.x > max_x:
 			end_room = room
 			max_x = room.position.x
+
+func find_shark_spawner():
+	var min_y = -INF
+	for room in $Rooms.get_children():
+		if room.position.x > min_y:
+			shark_room = room
+			min_y = room.position.y
