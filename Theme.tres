@@ -5,6 +5,7 @@
 [ext_resource type="FontFile" uid="uid://b7nyt42qnmlyi" path="res://Fonts/PixeloidSans-mLxMm.ttf" id="3_eil3v"]
 
 [resource]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/fonts/font = ExtResource("1_jhwby")
 Label/fonts/font = ExtResource("1_jhwby")
 RichTextLabel/fonts/bold_font = ExtResource("2_r1j1m")

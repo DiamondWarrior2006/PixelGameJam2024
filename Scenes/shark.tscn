@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dsgi1t7cgdugx"]
+[gd_scene load_steps=23 format=3 uid="uid://dsgi1t7cgdugx"]
 
 [ext_resource type="Script" path="res://Scripts/shark.gd" id="1_jcwth"]
 [ext_resource type="Texture2D" uid="uid://cgm8426newwiv" path="res://Sprites/Shark_Idle.png" id="2_l7yl0"]
@@ -130,11 +130,15 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gk6g7"]
-radius = 338.006
+radius = 933.666
 
-[node name="Shark" type="CharacterBody2D"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d5rd0"]
+radius = 24.0
+height = 158.0
+
+[node name="Shark" type="CharacterBody2D" groups=["shark"]]
 position = Vector2(549, 218)
-collision_mask = 2
+collision_mask = 6
 script = ExtResource("1_jcwth")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -151,8 +155,14 @@ polygon = PackedVector2Array(66, -15, 42, -20, 37, -28, 22, -27, 20, -20, -29, -
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-visible = false
 shape = SubResource("CircleShape2D_gk6g7")
+
+[node name="Area2D2" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_d5rd0")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="Area2D2" to="." method="_on_area_2d_2_body_entered"]

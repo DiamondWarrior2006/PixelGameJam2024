@@ -16,6 +16,8 @@ var max_size = 15
 var horiz_spread = 100
 var cull = 0.5
 
+var shark_position
+
 var path
 var play_mode = false
 var start_room = null
@@ -31,7 +33,6 @@ func _ready():
 
 func _process(delta):
 	queue_redraw()
-	
 
 func make_rooms():
 	for i in range(num_rooms):
@@ -58,15 +59,10 @@ func make_rooms():
 	
 	find_start_room()
 	find_end_room()
-	find_shark_spawner()
 	player = Player.instantiate()
 	add_child(player)
 	player.position = start_room.position
-	
-	shark = Shark.instantiate()
-	add_child(shark)
-	shark.position = shark_room.position
-	
+	AtmospherePlayer.play_atmo_1()
 	algae = Collectable.instantiate()
 	add_child(algae)
 	algae.position = end_room.position
@@ -83,12 +79,6 @@ func _draw():
 #				var pp = path.get_point_position(p)
 #				var cp = path.get_point_position(c)
 #				draw_line(pp, cp, Color(131, 191, 63), 15, true)
-
-func _input(event):
-	if event.is_action_pressed("ui_down"):
-		for n in $Rooms.get_children():
-			n.queue_free()
-		make_rooms()
 
 func find_mst(nodes):
 	var path = AStar2D.new()
@@ -115,7 +105,6 @@ func find_mst(nodes):
 func make_map():
 	Map.clear()
 	
-	var walls = []
 	var full_rect = Rect2()
 	for room in $Rooms.get_children():
 		var r = Rect2(room.position - room.size, room.get_node("CollisionShape2D").shape.extents*2)
@@ -124,8 +113,6 @@ func make_map():
 	var bottomright = Map.local_to_map(full_rect.end)
 	for x in range(topleft.x, bottomright.x):
 		for y in range(topleft.y, bottomright.y):
-			walls.append(Vector2i(x, y))
-#			Map.set_cells_terrain_connect(0, walls, 0, 0, false)
 			Map.set_cell(0, Vector2i(x, y), 1, Vector2i(1, 1), 0)
 	
 	var corridors = []
@@ -136,6 +123,10 @@ func make_map():
 		for x in range(2, s.x * 2 - 1):
 			for y in range(2, s.y * 2 - 1):
 				Map.set_cell(0, Vector2i(ul.x + x, ul.y + y), 2, Vector2i(0, 0), 0)
+				var source_id = Map.get_cell_source_id(0, Vector2i(ul.x + x, ul.y + y))
+				var tiles = Vector2i(randi_range(0, 2), randi_range(0, 2))
+				if source_id == 2:
+					Map.set_cell(1, Vector2i(pos.x, pos.y), 3, tiles, 0)
 		var p = path.get_closest_point(Vector2(room.position.x, room.position.y))
 		for conn in path.get_point_connections(p):
 			if not conn in corridors:
@@ -145,8 +136,6 @@ func make_map():
 		corridors.append(p)
 
 func carve_corrider(start, end):
-	
-	
 	var difference_x = sign(end.x - start.x)
 	var difference_y = sign(end.y - start.y)
 	
@@ -168,6 +157,25 @@ func carve_corrider(start, end):
 		Map.set_cell(0, Vector2i(y_over_x.x, y), 2, Vector2i(0, 0), 0);
 		Map.set_cell(0, Vector2i(y_over_x.x + difference_x, y), 2, Vector2i(0, 0), 0);
 
+func find_valid_position():
+	var cell_coord = Map.local_to_map(player.position)
+	var cell_type_id = Map.get_cell_source_id(0, cell_coord, false)
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	
+	player.get_node("Path2D/PathFollow2D").progress = rng.randf_range(0, 3589.84)
+	
+	if cell_type_id == 2:
+		add_shark(shark_position)
+	else:
+		find_valid_position()
+	
+
+func add_shark(shark_pos):
+	shark = Shark.instantiate()
+	shark.global_position = player.get_node("Path2D/PathFollow2D/Marker2D").global_position
+	add_child(shark)
+
 func find_start_room():
 	var min_x = INF
 	for room in $Rooms.get_children():
@@ -182,9 +190,12 @@ func find_end_room():
 			end_room = room
 			max_x = room.position.x
 
-func find_shark_spawner():
-	var min_y = -INF
-	for room in $Rooms.get_children():
-		if room.position.x > min_y:
-			shark_room = room
-			min_y = room.position.y
+
+func _on_spawn_timer_timeout():
+	find_valid_position()
+	$Node/DespawnTimer.start()
+
+
+func _on_despawn_timer_timeout():
+	shark.queue_free()
+	$Node/SpawnTimer.start()

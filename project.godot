@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 ScoreSystem="*res://Scripts/score_system.gd"
+MusicPlayer="*res://Scripts/music_player.gd"
+AtmospherePlayer="*res://Scripts/AtmospherePlayer.gd"
 
 [display]
 

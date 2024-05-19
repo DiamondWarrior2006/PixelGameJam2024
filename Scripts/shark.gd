@@ -3,7 +3,7 @@ extends CharacterBody2D
 @onready var animator = $AnimatedSprite2D
 
 var player = null
-var speed = 200
+var speed = 300
 
 var rotation_speed = 15
 
@@ -28,10 +28,19 @@ func animations():
 		animator.play("Idle")
 
 func _on_area_2d_body_entered(body):
-	player = body
-	moving = true
+	if body.name == "PlayerFish":
+		player = body
+		moving = true
+		player.is_being_chased = true
 
 
 func _on_area_2d_body_exited(body):
-	player = null
-	moving = false
+	if body.name == "PlayerFish":
+		player = null
+		moving = false
+		player.is_being_chased = false
+
+
+func _on_area_2d_2_body_entered(body):
+	if body.name == "PlayerFish":
+		get_tree().change_scene_to_file("res://Scenes/game_over.tscn")

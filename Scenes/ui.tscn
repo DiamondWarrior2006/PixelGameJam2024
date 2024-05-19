@@ -1,8 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://bft1f8q3asqg"]
+[gd_scene load_steps=8 format=3 uid="uid://bft1f8q3asqg"]
 
 [ext_resource type="Script" path="res://Scripts/ui.gd" id="1_27nj8"]
 [ext_resource type="Theme" uid="uid://cg1qrn81ska6n" path="res://Theme.tres" id="2_2idth"]
+[ext_resource type="Shader" path="res://Scenes/gv.gdshader" id="2_mk8o8"]
 [ext_resource type="FontFile" uid="uid://cu0u7sjbck8pg" path="res://Fonts/PixeloidSansBold-PKnYd.ttf" id="2_w134s"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_imy0m"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r4n0i"]
+noise = SubResource("FastNoiseLite_imy0m")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ffne7"]
+shader = ExtResource("2_mk8o8")
+shader_parameter/refraction_stretch = Vector2(1, 1)
+shader_parameter/refraction_strength = 0.004
+shader_parameter/water_tint = Color(0.2, 0.6, 1, 0.0901961)
+shader_parameter/speed = 0.245
+shader_parameter/refraction_map = SubResource("NoiseTexture2D_r4n0i")
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -12,6 +26,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_27nj8")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ffne7")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1

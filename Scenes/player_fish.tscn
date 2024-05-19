@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://kgu4mmo34jle"]
+[gd_scene load_steps=31 format=3 uid="uid://kgu4mmo34jle"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerFish.gd" id="1_pytjm"]
 [ext_resource type="Texture2D" uid="uid://cb48n0ns0ojve" path="res://Sprites/Player_Idle.png" id="2_6gqfk"]
@@ -401,7 +401,15 @@ shader_parameter/gravity = Vector3(0, -1e-06, 0)
 shader_parameter/emission_angle = null
 shader_parameter/color_ramp = SubResource("GradientTexture1D_dxi8u")
 
-[node name="PlayerFish" type="CharacterBody2D"]
+[sub_resource type="Curve2D" id="Curve2D_8junu"]
+bake_interval = 5.45
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -574, -319, 0, 0, 0, 0, 575, -321, 0, 0, 0, 0, 575, 325, 0, 0, 0, 0, -575, 321, 0, 0, 0, 0, -576, -321, 0, 0, 0, 0, -574, -319)
+}
+point_count = 6
+
+[node name="PlayerFish" type="CharacterBody2D" groups=["player"]]
+collision_layer = 5
 collision_mask = 2
 script = ExtResource("1_pytjm")
 
@@ -417,10 +425,15 @@ rotation = 1.5708
 polygon = PackedVector2Array(-3.99991, 25, 4.00009, 25, 9.00003, 6.99997, 11, -11, 18, -13.0001, 17.9999, -21.0001, 10.9999, -22, 8.99989, -31, 2.99986, -40, -3.00014, -40, -7.00013, -36, -10.0001, -23, -19.0001, -18.9999, -19, -11.9999, -11, -11, -8.99999, 4.00003)
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.4
+one_shot = true
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="CPUParticles2D" type="GPUParticles2D" parent="."]
-z_index = -45
+visibility_layer = 2
+z_index = -1
 texture_filter = 1
 emitting = false
 process_material = SubResource("ShaderMaterial_ijchv")
@@ -431,4 +444,15 @@ lifetime = 0.5
 limit_smoothed = true
 position_smoothing_enabled = true
 
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_8junu")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-574.001, -319.001)
+rotation = 0.782549
+progress = 3589.84
+
+[node name="Marker2D" type="Marker2D" parent="Path2D/PathFollow2D"]
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
