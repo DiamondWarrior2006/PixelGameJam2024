@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://Scripts/AtmospherePlayer.gd" id="1_owxud"]
 
 [node name="AtmospherePlayer" type="AudioStreamPlayer"]
+bus = &"SFX"
 script = ExtResource("1_owxud")

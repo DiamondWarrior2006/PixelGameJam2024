@@ -5,17 +5,19 @@ extends AudioStreamPlayer
 @onready var alert_theme = preload("res://Music/ST_Alert.wav")
 @onready var active_theme = preload("res://Music/ST_Active.wav")
 
+var isPlayingNormalMusic = false
+
 func play_normal_theme():
 	stream = normal_theme
-	volume_db = -10
+	set_bus("Music")
 	play()
 
 func play_alert_theme():
 	stream = alert_theme
-	volume_db = -10
+	set_bus("Music")
 	play()
 
 func play_active_theme():
 	stream = active_theme
-	volume_db = -10
+	set_bus("Music")
 	play()

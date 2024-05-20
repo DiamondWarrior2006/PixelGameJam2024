@@ -1,9 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://bft1f8q3asqg"]
+[gd_scene load_steps=14 format=3 uid="uid://bft1f8q3asqg"]
 
 [ext_resource type="Script" path="res://Scripts/ui.gd" id="1_27nj8"]
 [ext_resource type="Theme" uid="uid://cg1qrn81ska6n" path="res://Theme.tres" id="2_2idth"]
 [ext_resource type="Shader" path="res://Scenes/gv.gdshader" id="2_mk8o8"]
 [ext_resource type="FontFile" uid="uid://cu0u7sjbck8pg" path="res://Fonts/PixeloidSansBold-PKnYd.ttf" id="2_w134s"]
+[ext_resource type="Texture2D" uid="uid://yd0it0cphxaq" path="res://Sprites/Golden_Alga.png" id="3_haqqs"]
+[ext_resource type="Script" path="res://Scripts/PauseMenu.gd" id="6_hd2n3"]
+[ext_resource type="Script" path="res://Scripts/Panel.gd" id="7_2f0a0"]
+[ext_resource type="PackedScene" uid="uid://bspu0757rwff3" path="res://Scenes/h_slider.tscn" id="8_xt6gq"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_imy0m"]
 
@@ -18,7 +22,15 @@ shader_parameter/water_tint = Color(0.2, 0.6, 1, 0.0901961)
 shader_parameter/speed = 0.245
 shader_parameter/refraction_map = SubResource("NoiseTexture2D_r4n0i")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_b8pgu"]
+atlas = ExtResource("3_haqqs")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e35pj"]
+bg_color = Color(0.25098, 0.662745, 0.741176, 1)
+
 [node name="UI" type="Control"]
+texture_filter = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,16 +59,25 @@ grow_vertical = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.55
 
 [node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 4.1
 
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+texture_filter = 1
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+texture = SubResource("AtlasTexture_b8pgu")
+
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.3
+size_flags_stretch_ratio = 0.35
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/CenterContainer"]
 texture_filter = 1
@@ -65,7 +86,8 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 theme = ExtResource("2_2idth")
 theme_override_fonts/font = ExtResource("2_w134s")
-text = "Golden Algaes left: 0"
+theme_override_font_sizes/font_size = 31
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -73,4 +95,158 @@ uppercase = true
 [node name="Control" type="Control" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 5.4
+size_flags_stretch_ratio = 3.35
+
+[node name="PauseMenu" type="Control" parent="." node_paths=PackedStringArray("ui", "settingsPanel")]
+process_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_hd2n3")
+ui = NodePath("..")
+settingsPanel = NodePath("Panel/Panel")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.278
+anchor_top = 0.247
+anchor_right = 0.712
+anchor_bottom = 0.633
+offset_left = -0.256042
+offset_top = -0.0559845
+offset_right = -0.223999
+offset_bottom = -0.18399
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(248, 118)
+theme = ExtResource("2_2idth")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="PauseMenu/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("2_w134s")
+theme_override_font_sizes/font_size = 31
+text = "Paused"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.25
+alignment = 1
+
+[node name="Resume" type="Button" parent="PauseMenu/Panel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_2idth")
+text = "Resume"
+flat = true
+
+[node name="Resume2" type="Button" parent="PauseMenu/Panel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_2idth")
+text = "Settings"
+flat = true
+
+[node name="Resume3" type="Button" parent="PauseMenu/Panel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_2idth")
+text = "Back To Menu"
+flat = true
+
+[node name="Panel" type="Panel" parent="PauseMenu/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.224
+anchor_top = -0.0320001
+anchor_right = 0.768
+anchor_bottom = 1.024
+offset_bottom = -3.05176e-05
+theme_override_styles/panel = SubResource("StyleBoxFlat_e35pj")
+script = ExtResource("7_2f0a0")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0588235
+anchor_top = 0.136364
+anchor_right = 0.941176
+anchor_bottom = 0.772727
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="PauseMenu/Panel/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+size_flags_stretch_ratio = 0.2
+theme_override_fonts/font = ExtResource("2_w134s")
+theme_override_font_sizes/font_size = 31
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="PauseMenu/Panel/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+size_flags_stretch_ratio = 0.35
+
+[node name="Label" type="Label" parent="PauseMenu/Panel/Panel/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Master"
+
+[node name="HSlider" parent="PauseMenu/Panel/Panel/VBoxContainer/GridContainer" instance=ExtResource("8_xt6gq")]
+layout_mode = 2
+size_flags_horizontal = 3
+bus_name = "Master"
+
+[node name="Label2" type="Label" parent="PauseMenu/Panel/Panel/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "SFX"
+
+[node name="HSlider2" parent="PauseMenu/Panel/Panel/VBoxContainer/GridContainer" instance=ExtResource("8_xt6gq")]
+layout_mode = 2
+size_flags_horizontal = 3
+bus_name = "SFX"
+
+[node name="Label3" type="Label" parent="PauseMenu/Panel/Panel/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Music"
+
+[node name="HSlider3" parent="PauseMenu/Panel/Panel/VBoxContainer/GridContainer" instance=ExtResource("8_xt6gq")]
+layout_mode = 2
+size_flags_horizontal = 3
+bus_name = "Music"
+
+[node name="Button" type="Button" parent="PauseMenu/Panel/Panel/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Exit"
+flat = true
+
+[connection signal="pressed" from="PauseMenu/Panel/VBoxContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/VBoxContainer/VBoxContainer/Resume2" to="PauseMenu" method="_on_resume_2_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/VBoxContainer/VBoxContainer/Resume3" to="PauseMenu" method="_on_resume_3_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Panel/VBoxContainer/GridContainer/Button" to="PauseMenu/Panel/Panel" method="_on_button_pressed"]

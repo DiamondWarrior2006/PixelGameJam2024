@@ -10,13 +10,10 @@ var rotation_speed = 15
 var can_dash = true
 var dashing = false
 var moving = false
+var musicPlaying = false
 
 func _ready():
 	speed = normal_speed
-	if is_being_chased == true:
-		MusicPlayer.play_active_theme()
-	else:
-		MusicPlayer.play_normal_theme()
 
 func _physics_process(delta):
 	# Player Dashing

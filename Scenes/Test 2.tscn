@@ -17,12 +17,13 @@ one_shot = true
 autostart = true
 
 [node name="DespawnTimer" type="Timer" parent="Node"]
-wait_time = 60.0
+wait_time = 30.0
 one_shot = true
 
 [node name="TileMap" type="TileMap" parent="."]
 show_behind_parent = true
 z_index = -2
+texture_filter = 1
 tile_set = ExtResource("2_sfivf")
 format = 2
 layer_0/name = "Props"

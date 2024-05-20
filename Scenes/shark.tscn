@@ -1,8 +1,9 @@
-[gd_scene load_steps=23 format=3 uid="uid://dsgi1t7cgdugx"]
+[gd_scene load_steps=24 format=3 uid="uid://dsgi1t7cgdugx"]
 
 [ext_resource type="Script" path="res://Scripts/shark.gd" id="1_jcwth"]
 [ext_resource type="Texture2D" uid="uid://cgm8426newwiv" path="res://Sprites/Shark_Idle.png" id="2_l7yl0"]
 [ext_resource type="Texture2D" uid="uid://c26m710ymrghd" path="res://Sprites/Shark_Moving.png" id="3_r4qf7"]
+[ext_resource type="AudioStream" uid="uid://bwhqs7xxmr3tv" path="res://Music/ST_ActiveLayer.wav" id="4_rfqhs"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p6a3m"]
 atlas = ExtResource("2_l7yl0")
@@ -162,6 +163,11 @@ shape = SubResource("CircleShape2D_gk6g7")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_d5rd0")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_rfqhs")
+autoplay = true
+bus = &"Music"
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

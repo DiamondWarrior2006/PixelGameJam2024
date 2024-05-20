@@ -30,9 +30,13 @@ var algae = null
 func _ready():
 	randomize()
 	make_rooms()
+	AtmospherePlayer.isPlayingAtmo0 = false
 
 func _process(delta):
 	queue_redraw()
+	if ScoreSystem.score == 0:
+		await(get_tree().create_timer(3.0).timeout)
+		get_tree().change_scene_to_file("res://Scenes/win_screen.tscn")
 
 func make_rooms():
 	for i in range(num_rooms):
@@ -42,7 +46,7 @@ func make_rooms():
 		var hig = min_size + randi() % (max_size - min_size)
 		r.make_room(pos, Vector2(wid + 1, hig + 1) * tile_size)
 		$Rooms.add_child(r)
-	await(get_tree().create_timer(0.5).timeout)
+	await(get_tree().create_timer(0.1).timeout)
 	
 	var room_pos = []
 	for room in $Rooms.get_children():
@@ -55,14 +59,19 @@ func make_rooms():
 	
 	path = find_mst(room_pos)
 	make_map()
-	await(get_tree().create_timer(0.5).timeout)
+	await(get_tree().create_timer(0.1).timeout)
 	
 	find_start_room()
 	find_end_room()
 	player = Player.instantiate()
 	add_child(player)
 	player.position = start_room.position
-	AtmospherePlayer.play_atmo_1()
+	if AtmospherePlayer.isPlayingAtmo1 == false:
+		AtmospherePlayer.play_atmo_1()
+		AtmospherePlayer.isPlayingAtmo1 = true
+	if MusicPlayer.isPlayingNormalMusic == false:
+			MusicPlayer.play_normal_theme()
+			MusicPlayer.isPlayingNormalMusic = true	
 	algae = Collectable.instantiate()
 	add_child(algae)
 	algae.position = end_room.position
@@ -70,7 +79,7 @@ func make_rooms():
 
 func _draw():
 	if start_room:
-		pass
+		draw_string(font, start_room.position - Vector2(125, 0), "START", HORIZONTAL_ALIGNMENT_CENTER, -1, 100, Color("FAD606"))
 #	for room in $Rooms.get_children():
 #		draw_rect(Rect2(room.position - room.size, room.size * 2), Color(131, 191, 63), false)
 #	if path:
@@ -123,10 +132,17 @@ func make_map():
 		for x in range(2, s.x * 2 - 1):
 			for y in range(2, s.y * 2 - 1):
 				Map.set_cell(0, Vector2i(ul.x + x, ul.y + y), 2, Vector2i(0, 0), 0)
-				var source_id = Map.get_cell_source_id(0, Vector2i(ul.x + x, ul.y + y))
-				var tiles = Vector2i(randi_range(0, 2), randi_range(0, 2))
+				var source_id = Map.get_cell_source_id(0, Vector2i(ul.x + x, ul.y + y), true)
+				var tiles = Vector2i(0, randi_range(0, 3))
+				var tiles_2 = Vector2i(1, randi_range(0, 3))
+				var tiles_3 = Vector2i(2, randi_range(0, 3))
+				var tiles_4 = Vector2i(3, randi_range(0, 3))
 				if source_id == 2:
 					Map.set_cell(1, Vector2i(pos.x, pos.y), 3, tiles, 0)
+					Map.set_cell(1, Vector2i(pos.x + 5, pos.y + 5), 3, tiles, 0)
+					Map.set_cell(1, Vector2i(pos.x + 2, pos.y + 7), 4, tiles_2, 0)
+					Map.set_cell(1, Vector2i(pos.x - 5, pos.y - 7), 5, tiles_3, 0)
+					Map.set_cell(1, Vector2i(pos.x - 10, pos.y + 4), 6, tiles_4, 0)
 		var p = path.get_closest_point(Vector2(room.position.x, room.position.y))
 		for conn in path.get_point_connections(p):
 			if not conn in corridors:
@@ -158,7 +174,7 @@ func carve_corrider(start, end):
 		Map.set_cell(0, Vector2i(y_over_x.x + difference_x, y), 2, Vector2i(0, 0), 0);
 
 func find_valid_position():
-	var cell_coord = Map.local_to_map(player.position)
+	var cell_coord = Map.local_to_map(player.get_node("Path2D/PathFollow2D/Marker2D").global_position)
 	var cell_type_id = Map.get_cell_source_id(0, cell_coord, false)
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
